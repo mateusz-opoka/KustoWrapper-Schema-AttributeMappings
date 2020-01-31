@@ -10,7 +10,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build with dotnet
+    - name: Build and test
       run: |
         cd src
         dotnet build --configuration Release
+        dotnet test
