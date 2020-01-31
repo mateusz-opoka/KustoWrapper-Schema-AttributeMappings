@@ -32,10 +32,12 @@ namespace Azure.Kusto.Schema.AttributeMappings.Tests
 
             using (new AssertionScope())
             {
-                act["property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.Property));
+                act["property"].Name.Should().Be("property");
                 act["property"].Type.Should().Be(expectedPropertyType);
-                act["nullable_property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.NullableProperty));
+                act["property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.Property));
+                act["nullable_property"].Name.Should().Be("nullable_property");
                 act["nullable_property"].Type.Should().Be(expectedPropertyType);
+                act["nullable_property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.NullableProperty));
             }
         }
 
@@ -52,6 +54,7 @@ namespace Azure.Kusto.Schema.AttributeMappings.Tests
 
             using (new AssertionScope())
             {
+                act["property"].Name.Should().Be("property");
                 act["property"].SourcePropertyName.Should().Be(nameof(Fixture.ClassBasedPropertiesClass<object>.Property));
                 act["property"].Type.Should().Be(expectedPropertyType);
             }
@@ -62,6 +65,18 @@ namespace Azure.Kusto.Schema.AttributeMappings.Tests
         {
             var act = KustoColumnMappingsBuilder.Build<Fixture.UnnamedKustoColumn>();
             act.Should().ContainKey(nameof(Fixture.UnnamedKustoColumn.Property));
+        }
+
+        [Test]
+        public void Build_OnDuplicatedColumName_Should_ThrowException()
+        {
+            var _ = $"{nameof(Fixture.DuplicatedNameKustoColum.Property1)}" +
+                    $"_{nameof(Fixture.DuplicatedNameKustoColum.Property2)}";
+
+            Action act = () => KustoColumnMappingsBuilder.Build<Fixture.DuplicatedNameKustoColum>();
+
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("Column name `*` already exist.");
         }
 
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
@@ -81,6 +96,12 @@ namespace Azure.Kusto.Schema.AttributeMappings.Tests
             public abstract class UnnamedKustoColumn
             {
                 [KustoColumn] public int Property { get; } = default;
+            }
+
+            public abstract class DuplicatedNameKustoColum
+            {
+                [KustoColumn("column")] public object Property1 { get; } = default;
+                [KustoColumn("column")] public object Property2 { get; } = default;
             }
 
             public abstract class CustomType { }
