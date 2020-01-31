@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Custom.Azure.Kusto.Schema.AttributeMappings</PackageId>
+    <Version>1.0.0-preview1</Version>
+    <Description></Description>
+    <PackageTags>kusto</PackageTags>
+    <RepositoryUrl>https://github.com/mateusz-opoka/Azure-Kusto-Schema-AttributeMappings</RepositoryUrl>
+    <Authors>Mateusz Opoka</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>

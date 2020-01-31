@@ -1,5 +1,8 @@
-name: .NET Core
-on: [push]
+name: build
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
     name: Build
@@ -24,3 +27,8 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: src/Azure.Kusto.Schema.AttributeMappings.Tests/coverage.opencover.xml
         flags: unittests
+    - name: Generate NuGet package
+      run: |
+        cd src/Azure.Kusto.Schema.AttributeMappings
+        dotnet pack --nologo --no-build --configuration Release -o out
+        dotnet nuget push out/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_APIKEY }} --skip-duplicate
