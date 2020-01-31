@@ -1,5 +1,5 @@
+name: .NET Core
 on: [push]
-
 jobs:
   build:
     name: Build
@@ -10,8 +10,17 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build and test
+    - name: Build with dotnet
       run: |
         cd src
         dotnet build --configuration Release
-        dotnet test
+    - name: Run unit tests
+      run: |
+        cd src/Azure.Kusto.Schema.AttributeMappings.Tests
+        dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+    - name: Publish coverage report to codecov.io
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: src/Azure.Kusto.Schema.AttributeMappings.Tests/coverage.opencover.xml
+        flags: unittests
