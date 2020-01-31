@@ -1,0 +1,1 @@
+# Azure-Kusto-Schema-AttributeMappings
