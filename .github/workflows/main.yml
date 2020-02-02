@@ -19,16 +19,16 @@ jobs:
         dotnet build --configuration Release
     - name: Run unit tests
       run: |
-        cd src/Azure.Kusto.Schema.AttributeMappings.Tests
+        cd src/KustoWrapper.Schema.AttributeMappings.Tests
         dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
     - name: Publish coverage report to codecov.io
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: src/Azure.Kusto.Schema.AttributeMappings.Tests/coverage.opencover.xml
+        file: src/KustoWrapper.Schema.AttributeMappings.Tests/coverage.opencover.xml
         flags: unittests
     - name: Generate NuGet package
       run: |
-        cd src/Azure.Kusto.Schema.AttributeMappings
+        cd src/KustoWrapper.Schema.AttributeMappings
         dotnet pack --nologo --no-build --configuration Release -o out
         dotnet nuget push out/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_APIKEY }} --skip-duplicate

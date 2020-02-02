@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azure.Kusto.Schema.AttributeMappings.Models
+namespace KustoWrapper.Schema.AttributeMappings.Models
 {
     public class KustoColumnInfo
     {

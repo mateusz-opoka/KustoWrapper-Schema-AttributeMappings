@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Azure.Kusto.Schema.AttributeMappings.Attributes
+namespace KustoWrapper.Schema.AttributeMappings.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class KustoColumnAttribute : Attribute

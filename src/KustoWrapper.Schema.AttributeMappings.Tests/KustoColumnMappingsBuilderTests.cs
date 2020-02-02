@@ -1,12 +1,12 @@
-﻿using Azure.Kusto.Schema.AttributeMappings.Attributes;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using KustoWrapper.Schema.AttributeMappings.Attributes;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Azure.Kusto.Schema.AttributeMappings.Tests
+namespace KustoWrapper.Schema.AttributeMappings.Tests
 {
     [TestFixture]
     public class KustoColumnMappingsBuilderTests

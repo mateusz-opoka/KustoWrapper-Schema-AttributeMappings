@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Azure.Kusto.Schema.AttributeMappings\Azure.Kusto.Schema.AttributeMappings.csproj" />
+    <ProjectReference Include="..\KustoWrapper.Schema.AttributeMappings\KustoWrapper.Schema.AttributeMappings.csproj" />
   </ItemGroup>
 
 </Project>

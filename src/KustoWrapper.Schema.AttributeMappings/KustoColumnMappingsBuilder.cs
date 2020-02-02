@@ -1,11 +1,11 @@
-﻿using Azure.Kusto.Schema.AttributeMappings.Attributes;
-using Azure.Kusto.Schema.AttributeMappings.Models;
+﻿using KustoWrapper.Schema.AttributeMappings.Attributes;
+using KustoWrapper.Schema.AttributeMappings.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Azure.Kusto.Schema.AttributeMappings
+namespace KustoWrapper.Schema.AttributeMappings
 {
     public class KustoColumnMappingsBuilder
     {
