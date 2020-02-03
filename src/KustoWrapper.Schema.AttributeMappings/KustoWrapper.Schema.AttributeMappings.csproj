@@ -6,7 +6,7 @@
     <Version>1.0.0-preview1</Version>
     <Description></Description>
     <PackageTags>kusto</PackageTags>
-    <RepositoryUrl>https://github.com/mateusz-opoka/Azure-Kusto-Schema-AttributeMappings</RepositoryUrl>
+    <RepositoryUrl>https://github.com/mateusz-opoka/KustoWrapper-Schema-AttributeMappings</RepositoryUrl>
     <Authors>Mateusz Opoka</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
