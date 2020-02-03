@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace KustoWrapper.Schema.AttributeMappings
 {
-    public class KustoColumnMappingsBuilder
+    public class KustoTableSchemaBuilder
     {
         /// <summary>
         /// Data types supported in Kusto

@@ -29,7 +29,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        KustoTableInfo kustoTable = KustoColumnMappingsBuilder.Build<KustoSampleEntity>();
+        KustoTableInfo kustoTable = KustoTableSchemaBuilder.Build<KustoSampleEntity>();
     }
 }
 ```

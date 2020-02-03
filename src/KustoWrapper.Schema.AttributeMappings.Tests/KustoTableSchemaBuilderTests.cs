@@ -9,12 +9,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace KustoWrapper.Schema.AttributeMappings.Tests
 {
     [TestFixture]
-    public class KustoColumnMappingsBuilderTests
+    public class KustoTableSchemaBuilderTests
     {
         [Test]
         public void Build_OnNull_Should_ThrowException()
         {
-            Action act = () => KustoColumnMappingsBuilder.Build(null);
+            Action act = () => KustoTableSchemaBuilder.Build(null);
             act.Should().Throw<ArgumentNullException>();
         }
 
@@ -28,7 +28,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         [TestCase(typeof(Fixture.StructBasedPropertiesClass<decimal>), typeof(decimal))]
         public void Build_OnStructBasedProperties_Should_BuildDescription(Type classWithProperies, Type expectedPropertyType)
         {
-            var act = KustoColumnMappingsBuilder.Build(classWithProperies);
+            var act = KustoTableSchemaBuilder.Build(classWithProperies);
 
             using (new AssertionScope())
             {
@@ -50,7 +50,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         [TestCase(typeof(Fixture.ClassBasedPropertiesClass<Fixture.CustomType>), typeof(object))]
         public void Build_OnClassBasedProperties_Should_BuildDescription(Type classWithProperies, Type expectedPropertyType)
         {
-            var act = KustoColumnMappingsBuilder.Build(classWithProperies);
+            var act = KustoTableSchemaBuilder.Build(classWithProperies);
 
             using (new AssertionScope())
             {
@@ -63,7 +63,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         [Test]
         public void Build_OnUnnamedKustoColumn_Should_ReturnPropertyName()
         {
-            var act = KustoColumnMappingsBuilder.Build<Fixture.UnnamedKustoColumn>();
+            var act = KustoTableSchemaBuilder.Build<Fixture.UnnamedKustoColumn>();
             act.Columns.Should().ContainKey(nameof(Fixture.UnnamedKustoColumn.Property));
         }
 
@@ -73,7 +73,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var _ = $"{nameof(Fixture.DuplicatedNameKustoColum.Property1)}" +
                     $"_{nameof(Fixture.DuplicatedNameKustoColum.Property2)}";
 
-            Action act = () => KustoColumnMappingsBuilder.Build<Fixture.DuplicatedNameKustoColum>();
+            Action act = () => KustoTableSchemaBuilder.Build<Fixture.DuplicatedNameKustoColum>();
 
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("Column name `*` already exist.");
@@ -82,14 +82,14 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         [Test]
         public void Build_OnUnnamedKustoTable_Should_ReturnClassName()
         {
-            var act = KustoColumnMappingsBuilder.Build<Fixture.UnnamedKustoTable>();
+            var act = KustoTableSchemaBuilder.Build<Fixture.UnnamedKustoTable>();
             act.TableName.Should().Be(nameof(Fixture.UnnamedKustoTable));
         }
 
         [Test]
         public void Build_NamedKustoTable_Should_ReturnNameFromAttribute()
         {
-            var act = KustoColumnMappingsBuilder.Build<Fixture.NamedKustoTable>();
+            var act = KustoTableSchemaBuilder.Build<Fixture.NamedKustoTable>();
             act.TableName.Should().Be("named_kusto_table");
         }
 
