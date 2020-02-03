@@ -32,12 +32,12 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
 
             using (new AssertionScope())
             {
-                act["property"].Name.Should().Be("property");
-                act["property"].Type.Should().Be(expectedPropertyType);
-                act["property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.Property));
-                act["nullable_property"].Name.Should().Be("nullable_property");
-                act["nullable_property"].Type.Should().Be(expectedPropertyType);
-                act["nullable_property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.NullableProperty));
+                act.Columns["property"].Name.Should().Be("property");
+                act.Columns["property"].Type.Should().Be(expectedPropertyType);
+                act.Columns["property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.Property));
+                act.Columns["nullable_property"].Name.Should().Be("nullable_property");
+                act.Columns["nullable_property"].Type.Should().Be(expectedPropertyType);
+                act.Columns["nullable_property"].SourcePropertyName.Should().Be(nameof(Fixture.StructBasedPropertiesClass<bool>.NullableProperty));
             }
         }
 
@@ -54,9 +54,9 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
 
             using (new AssertionScope())
             {
-                act["property"].Name.Should().Be("property");
-                act["property"].SourcePropertyName.Should().Be(nameof(Fixture.ClassBasedPropertiesClass<object>.Property));
-                act["property"].Type.Should().Be(expectedPropertyType);
+                act.Columns["property"].Name.Should().Be("property");
+                act.Columns["property"].SourcePropertyName.Should().Be(nameof(Fixture.ClassBasedPropertiesClass<object>.Property));
+                act.Columns["property"].Type.Should().Be(expectedPropertyType);
             }
         }
 
@@ -64,7 +64,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         public void Build_OnUnnamedKustoColumn_Should_ReturnPropertyName()
         {
             var act = KustoColumnMappingsBuilder.Build<Fixture.UnnamedKustoColumn>();
-            act.Should().ContainKey(nameof(Fixture.UnnamedKustoColumn.Property));
+            act.Columns.Should().ContainKey(nameof(Fixture.UnnamedKustoColumn.Property));
         }
 
         [Test]
@@ -77,6 +77,20 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
 
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("Column name `*` already exist.");
+        }
+
+        [Test]
+        public void Build_OnUnnamedKustoTable_Should_ReturnClassName()
+        {
+            var act = KustoColumnMappingsBuilder.Build<Fixture.UnnamedKustoTable>();
+            act.TableName.Should().Be(nameof(Fixture.UnnamedKustoTable));
+        }
+
+        [Test]
+        public void Build_NamedKustoTable_Should_ReturnNameFromAttribute()
+        {
+            var act = KustoColumnMappingsBuilder.Build<Fixture.NamedKustoTable>();
+            act.TableName.Should().Be("named_kusto_table");
         }
 
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
@@ -105,6 +119,11 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             }
 
             public abstract class CustomType { }
+
+            public abstract class UnnamedKustoTable { }
+
+            [KustoTable("named_kusto_table")]
+            public abstract class NamedKustoTable { }
         }
     }
 }

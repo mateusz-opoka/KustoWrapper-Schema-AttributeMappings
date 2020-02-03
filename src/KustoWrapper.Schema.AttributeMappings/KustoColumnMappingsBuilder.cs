@@ -27,27 +27,34 @@ namespace KustoWrapper.Schema.AttributeMappings
             typeof(decimal)
         };
 
-        public static Dictionary<string, KustoColumnInfo> Build<T>() => Build(typeof(T));
+        public static KustoTableInfo Build<T>() => Build(typeof(T));
 
-        public static Dictionary<string, KustoColumnInfo> Build(Type type)
+        public static KustoTableInfo Build(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            var descriptions = new Dictionary<string, KustoColumnInfo>();
+            var tableAttribute = GetKustoTableAttribute(type);
+            var tableName = tableAttribute?.TableName ?? type.Name;
+
+            var columnsDictionary = new Dictionary<string, KustoColumnInfo>();
             foreach (var propertyInfo in type.GetProperties())
             {
-                var attribute = GetKustoColumnAttribute(propertyInfo);
-                if (attribute == null) continue;
+                var columnAttribute = GetKustoColumnAttribute(propertyInfo);
+                if (columnAttribute == null) continue;
 
-                var columnName = attribute.ColumnName ?? propertyInfo.Name;
+                var columnName = columnAttribute.ColumnName ?? propertyInfo.Name;
 
-                if (descriptions.ContainsKey(columnName))
+                if (columnsDictionary.ContainsKey(columnName))
                     throw new InvalidOperationException($"Column name `{columnName}` already exist.");
 
-                descriptions.Add(columnName, BuildPropertyDefinition(columnName, propertyInfo));
+                columnsDictionary.Add(columnName, BuildPropertyDefinition(columnName, propertyInfo));
             }
 
-            return descriptions;
+            return new KustoTableInfo
+            {
+                TableName = tableName,
+                Columns = columnsDictionary
+            };
         }
 
         private static KustoColumnInfo BuildPropertyDefinition(string columnName, PropertyInfo propertyInfo)
@@ -59,5 +66,8 @@ namespace KustoWrapper.Schema.AttributeMappings
 
         private static KustoColumnAttribute GetKustoColumnAttribute(ICustomAttributeProvider propertyInfo) =>
             propertyInfo.GetCustomAttributes(false).OfType<KustoColumnAttribute>().SingleOrDefault();
+
+        private static KustoTableAttribute GetKustoTableAttribute(ICustomAttributeProvider type) =>
+            type.GetCustomAttributes(false).OfType<KustoTableAttribute>().SingleOrDefault();
     }
 }
