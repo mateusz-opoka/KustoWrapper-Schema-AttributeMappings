@@ -12,6 +12,7 @@ dotnet add package KustoWrapper.Schema.AttributeMappings --version 1.0.0-preview
 
 ## Example Usage
 ```csharp
+[KustoTable("Items")]
 public class KustoSampleEntity
 {
     [KustoColumn("date")]
@@ -28,7 +29,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Dictionary<string, KustoColumnInfo> columns = KustoColumnMappingsBuilder.Build<KustoSampleEntity>();
+        KustoTableInfo kustoTable = KustoColumnMappingsBuilder.Build<KustoSampleEntity>();
     }
 }
 ```
