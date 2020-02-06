@@ -30,6 +30,12 @@ class Program
     static void Main(string[] args)
     {
         KustoTableInfo kustoTable = KustoTableSchemaBuilder.Build<KustoSampleEntity>();
+        
+        string tableCreateCommand = KustoWrapperCommandGenerator
+            .GenerateTableCreateCommand(kustoTable);
+
+        string tableJsonMappingCreateOrAlterCommand = KustoWrapperCommandGenerator
+            .GenerateTableJsonMappingCreateOrAlterCommand(kustoTable, "ItemsMapping");
     }
 }
 ```
