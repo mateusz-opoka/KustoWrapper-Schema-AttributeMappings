@@ -1,6 +1,8 @@
 ﻿using Kusto.Data.Common;
+using Kusto.Data.Ingestion;
 using KustoWrapper.Schema.AttributeMappings.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KustoWrapper.Schema.AttributeMappings
@@ -21,15 +23,22 @@ namespace KustoWrapper.Schema.AttributeMappings
         {
             if (kustoTable == null) throw new ArgumentNullException(nameof(kustoTable));
 
-            var mapping = kustoTable.Columns
-                .Select(column => new JsonColumnMapping
-                {
-                    ColumnName = column.Value.Name,
-                    JsonPath = $"$.{column.Value.SourcePropertyName}"
-                });
+            var mapping = kustoTable.Columns.Select(BuildColumnMapping).ToList();
 
-            return CslCommandGenerator.GenerateTableJsonMappingCreateOrAlterCommand(
-                kustoTable.TableName, mappingName, mapping);
+            return CslCommandGenerator.GenerateTableMappingCreateOrAlterCommand(
+                IngestionMappingKind.Json, kustoTable.TableName, mappingName, mapping);
+        }
+
+        private static ColumnMapping BuildColumnMapping(KeyValuePair<string, KustoColumnInfo> column)
+        {
+            var (_, value) = column;
+
+            var properties = new Dictionary<string, string>
+            {
+                {"Path", $"$.{value.SourcePropertyName}"}
+            };
+
+            return new ColumnMapping(value.Name, null, properties);
         }
     }
 }

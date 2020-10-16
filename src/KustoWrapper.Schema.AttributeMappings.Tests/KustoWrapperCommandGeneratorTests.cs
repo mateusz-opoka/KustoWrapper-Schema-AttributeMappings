@@ -52,7 +52,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
                 .GenerateTableJsonMappingCreateOrAlterCommand(Fixture.SampleKustoTable, "sampleMapping");
 
             command.Should().Be(".create-or-alter table SampleItems ingestion json mapping 'sampleMapping' '[" +
-                                "{\"column\":\"timestamp\",\"path\":\"$.Timestamp\",\"datatype\":null,\"transform\":0}" +
+                                "{\"Properties\":{\"Path\":\"$.Timestamp\"},\"column\":\"timestamp\",\"datatype\":null}" +
                                 "]' with (removeOldestIfRequired=False) ");
         }
 
