@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>KustoWrapper.Schema.AttributeMappings</PackageId>
-    <Version>1.0.0-preview3</Version>
+    <Version>1.0.0-preview4</Version>
     <Description></Description>
     <PackageTags>kusto</PackageTags>
     <RepositoryUrl>https://github.com/mateusz-opoka/KustoWrapper-Schema-AttributeMappings</RepositoryUrl>
