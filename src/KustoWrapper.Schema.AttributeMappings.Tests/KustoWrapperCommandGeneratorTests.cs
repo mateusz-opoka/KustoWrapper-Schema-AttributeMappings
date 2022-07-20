@@ -26,6 +26,30 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         }
 
         [Test]
+        public void GenerateTableCreateCommand_OnSampleKustoTable_OnCustomTableName_ShouldStringCommand()
+        {
+            var tableInfo = Fixture.SampleKustoTable;
+            tableInfo.TableName = "TestCustomTableName";
+
+            var command = KustoWrapperCommandGenerator
+                .GenerateTableCreateCommand(tableInfo);
+
+            command.Should().Be(".create table TestCustomTableName (timestamp:datetime)");
+        }
+
+        [Test]
+        public void GenerateTableCreateCommand_OnSampleKustoTable_OnCustomTableNameWithSpecialChar_ShouldStringCommand()
+        {
+            var tableInfo = Fixture.SampleKustoTable;
+            tableInfo.TableName = "Test-Custom-Table-Name";
+
+            var command = KustoWrapperCommandGenerator
+                .GenerateTableCreateCommand(tableInfo);
+
+            command.Should().Be(".create table ['Test-Custom-Table-Name'] (timestamp:datetime)");
+        }
+
+        [Test]
         public void GenerateTableJsonMappingCreateOrAlterCommand_OnNull_ShouldThrowException()
         {
             Action act = () => KustoWrapperCommandGenerator
