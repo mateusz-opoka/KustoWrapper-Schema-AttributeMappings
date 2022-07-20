@@ -70,9 +70,6 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
         [Test]
         public void Build_OnDuplicatedColumName_Should_ThrowException()
         {
-            var _ = $"{nameof(Fixture.DuplicatedNameKustoColum.Property1)}" +
-                    $"_{nameof(Fixture.DuplicatedNameKustoColum.Property2)}";
-
             Action act = () => KustoTableSchemaBuilder.Build<Fixture.DuplicatedNameKustoColum>();
 
             act.Should().Throw<InvalidOperationException>()
@@ -93,29 +90,29 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             act.TableName.Should().Be("named_kusto_table");
         }
 
-        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
         private static class Fixture
         {
             public abstract class StructBasedPropertiesClass<T> where T : struct
             {
-                [KustoColumn("property")] public T Property { get; } = default;
-                [KustoColumn("nullable_property")] public T? NullableProperty { get; } = default;
+                [KustoColumn("property")] public T Property => default;
+                [KustoColumn("nullable_property")] public T? NullableProperty => default;
             }
 
             public abstract class ClassBasedPropertiesClass<T> where T : class
             {
-                [KustoColumn("property")] public T Property { get; } = default;
+                [KustoColumn("property")] public T Property => default;
             }
 
             public abstract class UnnamedKustoColumn
             {
-                [KustoColumn] public int Property { get; } = default;
+                [KustoColumn] public int Property => default;
             }
 
+            [SuppressMessage("ReSharper", "UnusedMember.Local")]
             public abstract class DuplicatedNameKustoColum
             {
-                [KustoColumn("column")] public object Property1 { get; } = default;
-                [KustoColumn("column")] public object Property2 { get; } = default;
+                [KustoColumn("column")] public object Property1 => default;
+                [KustoColumn("column")] public object Property2 => default;
             }
 
             public abstract class CustomType { }

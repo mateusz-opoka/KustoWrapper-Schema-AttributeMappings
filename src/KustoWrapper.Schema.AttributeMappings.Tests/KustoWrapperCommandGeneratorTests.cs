@@ -58,7 +58,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
 
         private static class Fixture
         {
-            public static KustoTableInfo SampleKustoTable => new KustoTableInfo
+            public static KustoTableInfo SampleKustoTable => new()
             {
                 TableName = "SampleItems",
                 Columns = new Dictionary<string, KustoColumnInfo>
