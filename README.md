@@ -8,7 +8,7 @@
 
 ## Installation
 ```
-dotnet add package KustoWrapper.Schema.AttributeMappings --version 1.1.0
+dotnet add package KustoWrapper.Schema.AttributeMappings --version 1.2.0
 ```
 
 ## Example Usage
