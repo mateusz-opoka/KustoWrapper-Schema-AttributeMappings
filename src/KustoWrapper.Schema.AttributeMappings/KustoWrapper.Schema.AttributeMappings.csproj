@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <PackageId>KustoWrapper.Schema.AttributeMappings</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Description>Provides support for creating the table schema and ingestion mappings using attributes on your models.</Description>
     <PackageTags>kusto</PackageTags>
     <RepositoryUrl>https://github.com/mateusz-opoka/KustoWrapper-Schema-AttributeMappings</RepositoryUrl>
