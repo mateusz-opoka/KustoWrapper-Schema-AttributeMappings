@@ -13,20 +13,37 @@ namespace KustoWrapper.Schema.AttributeMappings
         {
             if (kustoTable == null) throw new ArgumentNullException(nameof(kustoTable));
 
-            var columns = kustoTable.Columns
-                .Select(column => new Tuple<string, Type>(column.Value.Name, column.Value.Type));
+            var columns = kustoTable.Columns.Select(BuildColumnSchema);
+            var tableSchema = new TableSchema(kustoTable.TableName, columns);
 
-            return CslCommandGenerator.GenerateTableCreateCommand(kustoTable.TableName, columns);
+            return CslCommandGenerator.GenerateTableCreateCommand(tableSchema);
+        }
+
+        public static string GenerateTableCreateMergeCommand(KustoTableInfo kustoTable)
+        {
+            if (kustoTable == null) throw new ArgumentNullException(nameof(kustoTable));
+
+            var columns = kustoTable.Columns.Select(BuildColumnSchema);
+            var tableSchema = new TableSchema(kustoTable.TableName, columns);
+
+            return CslCommandGenerator.GenerateTableCreateMergeCommand(tableSchema);
         }
 
         public static string GenerateTableJsonMappingCreateOrAlterCommand(KustoTableInfo kustoTable, string mappingName)
         {
             if (kustoTable == null) throw new ArgumentNullException(nameof(kustoTable));
 
-            var mapping = kustoTable.Columns.Select(BuildColumnMapping).ToList();
+            var mapping = kustoTable.Columns.Select(BuildColumnMapping);
 
             return CslCommandGenerator.GenerateTableMappingCreateOrAlterCommand(
                 IngestionMappingKind.Json, kustoTable.TableName, mappingName, mapping);
+        }
+
+        private static ColumnSchema BuildColumnSchema(KeyValuePair<string, KustoColumnInfo> column)
+        {
+            var (_, value) = column;
+            var clrType = CslType.FromClrType(value.Type);
+            return ColumnSchema.FromNameAndCslType(value.Name, clrType.ToString());
         }
 
         private static ColumnMapping BuildColumnMapping(KeyValuePair<string, KustoColumnInfo> column)

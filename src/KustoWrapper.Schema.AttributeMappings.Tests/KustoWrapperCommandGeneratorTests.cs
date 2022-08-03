@@ -22,7 +22,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var command = KustoWrapperCommandGenerator
                 .GenerateTableCreateCommand(Fixture.SampleKustoTable);
 
-            command.Should().Be(".create table SampleItems (timestamp:datetime)");
+            command.Should().Be(".create table SampleItems (timestamp:datetime) ");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var command = KustoWrapperCommandGenerator
                 .GenerateTableCreateCommand(tableInfo);
 
-            command.Should().Be(".create table TestCustomTableName (timestamp:datetime)");
+            command.Should().Be(".create table TestCustomTableName (timestamp:datetime) ");
         }
 
         [Test]
@@ -46,7 +46,47 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var command = KustoWrapperCommandGenerator
                 .GenerateTableCreateCommand(tableInfo);
 
-            command.Should().Be(".create table ['Test-Custom-Table-Name'] (timestamp:datetime)");
+            command.Should().Be(".create table ['Test-Custom-Table-Name'] (timestamp:datetime) ");
+        }
+
+        [Test]
+        public void GenerateTableCreateMergeCommand_OnNull_ShouldThrowException()
+        {
+            Action act = () => KustoWrapperCommandGenerator.GenerateTableCreateMergeCommand(null);
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Test]
+        public void GenerateTableCreateMergeCommand_OnSampleKustoTable_ShouldStringCommand()
+        {
+            var command = KustoWrapperCommandGenerator
+                .GenerateTableCreateMergeCommand(Fixture.SampleKustoTable);
+
+            command.Should().Be(".create-merge table SampleItems (timestamp:datetime)");
+        }
+
+        [Test]
+        public void GenerateTableCreateMergeCommand_OnSampleKustoTable_OnCustomTableName_ShouldStringCommand()
+        {
+            var tableInfo = Fixture.SampleKustoTable;
+            tableInfo.TableName = "TestCustomTableName";
+
+            var command = KustoWrapperCommandGenerator
+                .GenerateTableCreateMergeCommand(tableInfo);
+
+            command.Should().Be(".create-merge table TestCustomTableName (timestamp:datetime)");
+        }
+
+        [Test]
+        public void GenerateTableCreateMergeCommand_OnSampleKustoTable_OnCustomTableNameWithSpecialChar_ShouldStringCommand()
+        {
+            var tableInfo = Fixture.SampleKustoTable;
+            tableInfo.TableName = "Test-Custom-Table-Name";
+
+            var command = KustoWrapperCommandGenerator
+                .GenerateTableCreateMergeCommand(tableInfo);
+
+            command.Should().Be(".create-merge table ['Test-Custom-Table-Name'] (timestamp:datetime)");
         }
 
         [Test]
