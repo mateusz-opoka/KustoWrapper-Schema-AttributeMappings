@@ -41,21 +41,18 @@ namespace KustoWrapper.Schema.AttributeMappings
 
         private static ColumnSchema BuildColumnSchema(KeyValuePair<string, KustoColumnInfo> column)
         {
-            var (_, value) = column;
-            var clrType = CslType.FromClrType(value.Type);
-            return ColumnSchema.FromNameAndCslType(value.Name, clrType.ToString());
+            var clrType = CslType.FromClrType(column.Value.Type);
+            return ColumnSchema.FromNameAndCslType(column.Value.Name, clrType.ToString());
         }
 
         private static ColumnMapping BuildColumnMapping(KeyValuePair<string, KustoColumnInfo> column)
         {
-            var (_, value) = column;
-
             var properties = new Dictionary<string, string>
             {
-                {"Path", $"$.{value.SourcePropertyName}"}
+                {"Path", $"$.{column.Value.SourcePropertyName}"}
             };
 
-            return new ColumnMapping(value.Name, null, properties);
+            return new ColumnMapping(column.Value.Name, null, properties);
         }
     }
 }
