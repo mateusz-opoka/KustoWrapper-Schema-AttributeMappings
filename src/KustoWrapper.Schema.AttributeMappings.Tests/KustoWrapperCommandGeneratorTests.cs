@@ -115,14 +115,13 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var command = KustoWrapperCommandGenerator
                 .GenerateTableJsonMappingCreateOrAlterCommand(Fixture.SampleKustoTable, "sampleMapping");
 
-            var expected = """
-                           .create-or-alter table SampleItems ingestion json mapping 'sampleMapping'
-                           ```
-                           [{"Properties":{"Path":"$.Timestamp"},"column":"timestamp","datatype":null}]
-                           ```
-                           """;
-
-            expected += "\nwith (removeOldestIfRequired=False)";
+            const string expected = """
+                                    .create-or-alter table SampleItems ingestion json mapping 'sampleMapping'
+                                    ```
+                                    [{"Properties":{"Path":"$.Timestamp"},"column":"timestamp","datatype":null}]
+                                    ```
+                                    with (removeOldestIfRequired=False)
+                                    """;
 
             command.Should().Be(expected);
         }
