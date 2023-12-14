@@ -115,6 +115,8 @@ namespace KustoWrapper.Schema.AttributeMappings.Tests
             var command = KustoWrapperCommandGenerator
                 .GenerateTableJsonMappingCreateOrAlterCommand(Fixture.SampleKustoTable, "sampleMapping");
 
+            command = command.ReplaceLineEndings();
+
             const string expected = """
                                     .create-or-alter table SampleItems ingestion json mapping 'sampleMapping'
                                     ```
